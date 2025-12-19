@@ -1,0 +1,68 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Welcome to MJ’s Django Site</h1>
+
+<hr>
+
+<h2>Students</h2>
+<table>
+    <thead>
+        <tr>
+            <th> Name </th>
+            <th> Age </th>
+            <th> Course </th>
+            <th> Year Level </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.age }}</td>
+            <td>{{ student.course }}</td>
+            <td>{{ student.year_level }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No students found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<h2>Recent Admin Actions</h2>
+{% if recent_actions %}
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Action</th>
+            <th>Object</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in recent_actions %}
+        <tr>
+            <td>{{ entry.user }}</td>
+            <td>
+                {% if entry.is_addition %}Added{% elif entry.is_change %}Changed{% elif entry.is_deletion %}Deleted{% endif %}
+            </td>
+            <td>{{ entry.object_repr }}</td>
+            <td>{{ entry.action_time|date:"M d, Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No recent actions yet.</p>
+{% endif %}
+
+{{ block.super }}
+{% endblock %}
